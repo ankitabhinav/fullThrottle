@@ -1,0 +1,20 @@
+[08-Aug-2018 10:40:55 UTC] PHP Warning:  file_get_contents(): SSL operation failed with code 1. OpenSSL Error messages:
+error:14090086:SSL routines:ssl3_get_server_certificate:certificate verify failed in /home/teovff3htipc/public_html/React/api/locate/weather.php on line 3
+[08-Aug-2018 10:40:55 UTC] PHP Warning:  file_get_contents(): Failed to enable crypto in /home/teovff3htipc/public_html/React/api/locate/weather.php on line 3
+[08-Aug-2018 10:40:55 UTC] PHP Warning:  file_get_contents(https://backrest.in/React/api/locate/weather.html): failed to open stream: operation failed in /home/teovff3htipc/public_html/React/api/locate/weather.php on line 3
+[08-Aug-2018 10:41:13 UTC] PHP Warning:  file_get_contents(): SSL operation failed with code 1. OpenSSL Error messages:
+error:14090086:SSL routines:ssl3_get_server_certificate:certificate verify failed in /home/teovff3htipc/public_html/React/api/locate/weather.php on line 3
+[08-Aug-2018 10:41:13 UTC] PHP Warning:  file_get_contents(): Failed to enable crypto in /home/teovff3htipc/public_html/React/api/locate/weather.php on line 3
+[08-Aug-2018 10:41:13 UTC] PHP Warning:  file_get_contents(https://backrest.in/React/api/locate/weather.html): failed to open stream: operation failed in /home/teovff3htipc/public_html/React/api/locate/weather.php on line 3
+[08-Aug-2018 10:43:20 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function http_get() in /home/teovff3htipc/public_html/React/api/locate/weather.php:3
+Stack trace:
+#0 {main}
+  thrown in /home/teovff3htipc/public_html/React/api/locate/weather.php on line 3
+[08-Aug-2018 10:43:58 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function http_get() in /home/teovff3htipc/public_html/React/api/locate/weather.php:3
+Stack trace:
+#0 {main}
+  thrown in /home/teovff3htipc/public_html/React/api/locate/weather.php on line 3
+[08-Aug-2018 11:43:00 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function http_get() in /home/teovff3htipc/public_html/React/api/locate/weather.php:3
+Stack trace:
+#0 {main}
+  thrown in /home/teovff3htipc/public_html/React/api/locate/weather.php on line 3

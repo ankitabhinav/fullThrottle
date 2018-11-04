@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+    <body>
+            <div id="demo"></div>
+            
+
+        <script>
+            if (navigator.geolocation) {
+                     navigator.geolocation.getCurrentPosition(showPosition);
+
+            } else {
+                    document.getElementById("demo").innerHTML = "Geolocation is not supported by this browser.";
+            }
+
+            function showPosition(position) {
+           
+                   
+                    console.log("Latitude : "+position.coords.latitude);
+                    console.log("Longitude : "+position.coords.longitude);
+
+                    var lati=+position.coords.latitude;
+                    var longi=+position.coords.longitude;
+
+                    var link="https://api.openweathermap.org/data/2.5/weather?lat="+lati+"&lon="+longi+"&appid=505637530e307700f04b9ac05eb45439&units=metric";
+
+                    $.get(link, function(dat, status){
+                       console.log("Data : "+JSON.stringify(dat));
+
+                       document.write("<li>Temperature :"+dat.main.temp+"</li>"+"<li>Min Temp :"+dat.main.temp_min+"</li>"+"<li>Max Temp :"+dat.main.temp_max+"</li>"+"<li>Humidity:"+dat.main.humidity+"</li>"+"<li>Outside :"+dat.weather[0].description+"</li>");
+
+
+                    });
+
+           
+            }
+        </script>
+
+
+    </body>
+</html>

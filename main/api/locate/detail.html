@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<head>
+<title>My Address</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<style>
+#latitude,#longitude
+{
+display:none;
+}
+</style>
+
+<script>
+	  
+	  
+	 // alert("Init Map called");
+	 // alert("getting location");
+	  if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+		console.log("geo location set");
+		
+    } else {
+        document.getElementById("demo").innerHTML = "Geolocation is not supported by this browser.";
+    }
+
+function showPosition(position) {
+    //document.getElementById("demo").innerHTML = "Latitude: " + position.coords.latitude + 
+    //"<br>Longitude: " + position.coords.longitude; 
+	console.log("lattitude : "+position.coords.latitude);
+	console.log("longitude : "+position.coords.longitude);
+	document.getElementById("latitude").value = position.coords.latitude;
+    document.getElementById("longitude").value=position.coords.longitude;
+	//after_location();
+	
+	}
+	
+
+</script>
+
+</head>
+<body>
+
+<input type="text" id="latitude"/>
+<input type="text" id="longitude"/> 
+
+<div id="demo"></div>
+<div id="temp"></div>
+<div id="address"></div>
+<div id="temperature"></div>
+<div id="humidity"></div>
+<div id="desc"></div>
+
+
+
+
+<div id="div1"></div>
+   
+	
+	
+    
+</body>
+</html>

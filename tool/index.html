@@ -1,0 +1,251 @@
+<html>
+
+<head>
+    <title>Full Throttle</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="js/papa.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
+</head>
+
+<body>
+    <h1> hii full throttle</h1>
+
+    <input type="file" id="files" multiple>
+    <button id="parse">PARSE</button>
+
+    <script>
+        function getMonday(d) {
+            d = new Date(d);
+            var day = d.getDay(),
+                diff = d.getDate() - day + (day == 0 ? -6 : 1);
+                var dateObj = new Date(d.setDate(diff));
+            var month = dateObj.getUTCMonth() + 1; //months from 1-12
+            var day = dateObj.getUTCDate();
+            var year = dateObj.getUTCFullYear();
+
+            newdate = year + "-" + month + "-" + day;
+            return newdate 
+        }
+
+        function getSunday(d) {
+             d = new Date(d);
+           var lastday = d.getDate() - (d.getDay() - 1) + 6;
+           var hold = new Date(d.setDate(lastday));
+           var month = hold.getUTCMonth() + 1; //months from 1-12
+            var day = hold.getUTCDate();
+            var year = hold.getUTCFullYear();
+
+ 
+
+            newdate = year + "-" + month + "-" + day;
+            return newdate
+        }
+
+        console.log('Monday :'+getMonday('2018-09-14'));
+        console.log('Sunday :'+getSunday('2018-09-14'));
+
+
+
+
+        var inputType = "string";
+        var stepped = 0, rowCount = 0, errorCount = 0, firstError;
+        var start, end;
+        var firstRun = true;
+        var maxUnparseLength = 10000;
+        var toCSV = "";
+
+        function convertDate(para) {
+            var time = para;
+            var hours = Number(time.match(/^(\d+)/)[1]);
+            var minutes = Number(time.match(/:(\d+)/)[1]);
+            var AMPM = time.match(/\s(.*)$/)[1];
+            if (AMPM == "PM" && hours < 12) hours = hours + 12;
+            if (AMPM == "AM" && hours == 12) hours = hours - 12;
+            var sHours = hours.toString();
+            var sMinutes = minutes.toString();
+            if (hours < 10) sHours = "0" + sHours;
+            if (minutes < 10) sMinutes = "0" + sMinutes;
+            var total = sHours + ":" + sMinutes;
+            //alert(sHours + ":" + sMinutes);
+            return total;
+        }
+
+        function callback(res, fil) {
+            // console.log(res);
+            for (var i = 1; i < res['data'].length - 1; i++) {
+                var one = res['data'][i][1];
+                var two = res['data'][i][2];
+                var three = one + " " + two;
+                //console.log(three);
+                var four = convertDate(three);
+                res['data'][i][1] = four + ":" + "00";
+
+                var one_stop = res['data'][i][4];
+                var two_stop = res['data'][i][5];
+                var three_stop = one_stop + " " + two_stop;
+                //console.log(three);
+                var four_stop = convertDate(three_stop);
+                res['data'][i][4] = four_stop + ":" + "00";
+
+
+
+                var dt_start = res['data'][i][0];
+                var flag_start = dt_start.indexOf("/");
+                var flag_start_case2 = dt_start.indexOf("-");
+
+                var dt_stop = res['data'][i][3];
+                var flag_stop = dt_start.indexOf("/");
+                var flag_stop_case2 = dt_start.indexOf("-");
+
+
+
+                if (flag_start != -1) {
+                    var dt_start_split = dt_start.split("/");
+                    if (dt_start_split[0].length == 1) { dt_start_split[0] = "0" + dt_start_split[0] }
+                    if (dt_start_split[1].length == 1) { dt_start_split[1] = "0" + dt_start_split[1] }
+
+                    var new_start = dt_start_split[2] + "-" + dt_start_split[0] + "-" + dt_start_split[1];
+                    res['data'][i][0] = new_start;
+                }
+
+                if (flag_stop != -1) {
+                    var dt_stop_split = dt_stop.split("/");
+                    if (dt_stop_split[0].length == 1) { dt_stop_split[0] = "0" + dt_stop_split[0] }
+                    if (dt_stop_split[1].length == 1) { dt_stop_split[1] = "0" + dt_stop_split[1] }
+                    var new_stop = dt_stop_split[2] + "-" + dt_stop_split[0] + "-" + dt_stop_split[1];
+                    res['data'][i][3] = new_stop;
+                }
+
+
+
+                if (flag_start_case2 != -1) {
+                    var dt_start_split = dt_start.split("-");
+                    if (dt_start_split[0].length == 1) { dt_start_split[0] = "0" + dt_start_split[0] }
+                    if (dt_start_split[1].length == 1) { dt_start_split[1] = "0" + dt_start_split[1] }
+                    var new_start = dt_start_split[2] + "-" + dt_start_split[0] + "-" + dt_start_split[1];
+                    res['data'][i][0] = new_start;
+                }
+
+                if (flag_stop_case2 != -1) {
+                    var dt_stop_split = dt_stop.split("-");
+                    if (dt_stop_split[0].length == 1) { dt_stop_split[0] = "0" + dt_stop_split[0] }
+                    if (dt_stop_split[1].length == 1) { dt_stop_split[1] = "0" + dt_stop_split[1] }
+                    var new_stop = dt_stop_split[2] + "-" + dt_stop_split[0] + "-" + dt_stop_split[1];
+                    res['data'][i][3] = new_stop;
+                }
+
+
+
+
+
+
+            }
+            console.log(res);
+
+
+            for (var i = 1; i < res['data'].length - 1; i++) {
+
+                toCSV = toCSV + res['data'][i][0] + " " + res['data'][i][1] + "," + res['data'][i][3] + " " + res['data'][i][4] + "\n";
+
+            }
+
+
+            console.log(toCSV);
+
+
+            var config_unparse = {
+
+                quotes: false,
+                quoteChar: '"',
+                escapeChar: '"',
+                delimiter: ",",
+                header: true,
+                newline: "\r\n"
+            }
+
+            var hld = toCSV;
+            $.post("write.php",
+                {
+                    content: hld,
+                    city: "Duckburg"
+                },
+                function (data, status) {
+                    alert("Data: " + data + "\nStatus: " + status);
+                });
+        }
+
+
+        var config = {
+            delimiter: "",	// auto-detect
+            newline: "",	// auto-detect
+            quoteChar: '"',
+            escapeChar: '"',
+            header: false,
+            trimHeaders: false,
+            dynamicTyping: false,
+            preview: 0,
+            encoding: "",
+            worker: false,
+            comments: false,
+            step: undefined,
+            complete: function (results, file) {
+                // console.log("Parsing complete:", results, file);
+                callback(results, file);
+
+            },
+            error: undefined,
+            download: false,
+            skipEmptyLines: false,
+            chunk: undefined,
+            fastMode: undefined,
+            beforeFirstChunk: undefined,
+            withCredentials: undefined,
+            transform: undefined
+        }
+
+        function now() {
+            return typeof window.performance !== 'undefined'
+                ? window.performance.now()
+                : 0;
+        }
+
+        function printStats(msg) {
+            if (msg)
+                console.log(msg);
+            console.log("       Time:", (end - start || "(Unknown; your browser does not support the Performance API)"), "ms");
+            console.log("  Row count:", rowCount);
+            if (stepped)
+                console.log("    Stepped:", stepped);
+            console.log("     Errors:", errorCount);
+            if (errorCount)
+                console.log("First error:", firstError);
+        }
+
+
+        $("#parse").click(function () {
+            $('#files').parse({
+                config: config,
+                before: function (file, inputElem) {
+                    start = now();
+                    console.log("Parsing file...", file);
+                },
+                error: function (err, file) {
+                    console.log("ERROR:", err, file);
+                    firstError = firstError || err;
+                    errorCount++;
+                },
+                complete: function () {
+                    end = now();
+                    // printStats("Done with all files");
+                    //console.log(results);
+                }
+            });
+        });
+
+
+    </script>
+
+</body>
+
+</html>
